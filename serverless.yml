@@ -1,0 +1,13 @@
+service: lambda-test-1
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  stage: dev
+  region: ap-south-1
+
+functions:
+  hello:
+    handler: src/handler.generateRandomNumber
+    timeout: 60 # seconds
+    memorySize: 128 # mb
