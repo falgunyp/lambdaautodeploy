@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use the desired Node.js version
+          node-version: '22' # Use the desired Node.js version
 
       - name: Install dependencies
         run: npm install
@@ -30,7 +30,7 @@ jobs:
           aws-region: 'ap-south-1' 
 
       - name: Deploy to Lambda
-        uses: aws-actions/aws-lambda-deploy@v4
+        uses: aws-actions/aws-lambda-deploy@v1 
         with:
           s3-bucket: lambdadeploymenttest07022025  # Replace with your S3 bucket name
           function-name: hello1 # Replace with your Lambda function name
