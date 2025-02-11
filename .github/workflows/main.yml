@@ -6,30 +6,51 @@ on:
       - main
 
 jobs:
-  deploy_lambda:
+  deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          node-version: '22'
-          cache: 'npm'
+          fetch-depth: 1
       
-      - name: Configure AWS Credentials
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Check if package.json exists
+        id: check_files
+        run: |
+          if [ -f "package.json" ]; then
+            echo "Package.json exists"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Package.json does not exist"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Initialize npm project if needed
+        if: steps.check_files.outputs.exists == 'false'
+        run: |
+          npm init -y
+      
+      - name: Install dependencies
+        run: npm ci || npm install
+      
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-          
-      - name: Install dependencies
-        run: npm install  # Changed from npm ci to npm install
-          
-      - name: Build and Deploy
-        run: |
-          npx ncc build index.ts -m
-          zip -j deploy.zip ./dist/*
-          aws lambda update-function-code \
-            --function-name=lambda-gh-action \
-            --zip-file=fileb://deploy.zip \
-            --publish
+          aws-region: ${{ env.AWS_REGION }}
