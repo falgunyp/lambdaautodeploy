@@ -10,10 +10,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install zip tool
-        uses: montudor/action-zip@v1
+      - name: Install Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+      - name: Install dependencies
+        run: npm install
+      - name: Build (if necessary)
+        run: npm run build 
       - name: Create Zip file for Lambda function
-        run: zip -r code.zip .
+        run: zip -r code.zip . 
       - name: AWS CLI v2
         uses: imehedi/actions-awscli-v2@latest
         with:
