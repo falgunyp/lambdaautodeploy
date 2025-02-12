@@ -1,0 +1,38 @@
+name: Deploy Lambda Functions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build layers (if applicable)
+        run: |
+          cd layers/my-common-layer && npm install && cd ..
+
+      - name: Package and deploy
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1 
+
+        run: |
+          sam package --output-template-file template.yaml --s3-bucket lambdadeploymenttest07022025 --region ap-south-1
+          sam deploy --template-file template.yaml --stack-name your-stack-name --capabilities CAPABILITY_IAM --region ap-south-1
