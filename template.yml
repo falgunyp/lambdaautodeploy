@@ -10,8 +10,8 @@ Resources:
       CodeUri: functions/function1
       MemorySize: 128
       Timeout: 30
-      Environment:
-        Variables:
+      #Environment:
+      #  Variables:
           # Load environment variables from .env file
       Layers:
         - !GetAtt: MyCommonLayer.Arn
@@ -24,8 +24,8 @@ Resources:
       CodeUri: functions/function1
       MemorySize: 128
       Timeout: 30
-      Environment:
-        Variables:
+      #Environment:
+      #  Variables:
           # Load environment variables from .env file
       Layers:
         - !GetAtt: MyCommonLayer.Arn
@@ -38,8 +38,8 @@ Resources:
       CodeUri: functions/function1
       MemorySize: 128
       Timeout: 30
-      Environment:
-        Variables:
+      #Environment:
+      #  Variables:
           # Load environment variables from .env file
       Layers:
         - !GetAtt: MyCommonLayer.Arn
