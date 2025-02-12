@@ -16,23 +16,35 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '20'  # Changed to LTS version
+          cache: 'npm'  # Added npm cache for faster installations
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm ci  # Using ci instead of install for cleaner, reproducible builds
 
       - name: Build layers (if applicable)
         run: |
-          cd layers/my-common-layer && npm install && cd ..
+          if [ -d "layers/my-common-layer" ]; then
+            cd layers/my-common-layer && npm ci && cd ../..
+          fi
 
-      - name: Package and deploy
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4  # Updated to latest version
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1 
+          aws-region: ap-south-1
 
+      - name: Package and deploy
         run: |
-          sam package --output-template-file template.yaml --s3-bucket lambdadeploymenttest07022025 --region ap-south-1
-          sam deploy --template-file template.yaml --stack-name your-stack-name --capabilities CAPABILITY_IAM --region ap-south-1
+          sam package \
+            --output-template-file packaged.yaml \
+            --s3-bucket lambdadeploymenttest07022025 \
+            --region ap-south-1
+          
+          sam deploy \
+            --template-file packaged.yaml \
+            --stack-name your-stack-name \
+            --capabilities CAPABILITY_IAM \
+            --region ap-south-1 \
+            --no-fail-on-empty-changeset  # Added to prevent failures when no changes are detected
