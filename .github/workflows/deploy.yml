@@ -44,7 +44,7 @@ jobs:
           
           sam deploy \
             --template-file packaged.yaml \
-            --stack-name your-stack-name \
+            --stack-name samdeploy \
             --capabilities CAPABILITY_IAM \
             --region ap-south-1 \
             --no-fail-on-empty-changeset  # Added to prevent failures when no changes are detected
