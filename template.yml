@@ -24,6 +24,7 @@ Resources:
   Function1:
     Type: 'AWS::Serverless::Function'
     Properties:
+      FunctionName: Function1
       Handler: function1/index.handler
       CodeUri: functions/function1
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -31,14 +32,16 @@ Resources:
   Function2:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: function1/index.handler
+      FunctionName: Function2
+      Handler: function2/index.handler
       CodeUri: functions/function1
       Role: !GetAtt LambdaExecutionRole.Arn
 
   Function3:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: function1/index.handler
+      FunctionName: Function3
+      Handler: function3/index.handler
       CodeUri: functions/function1
       Role: !GetAtt LambdaExecutionRole.Arn
 
