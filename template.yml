@@ -1,48 +1,46 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 30
+    Runtime: nodejs20.x
+
 Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
   Function1:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: function1/index.handler
-      Runtime: nodejs20.x 
       CodeUri: functions/function1
-      MemorySize: 128
-      Timeout: 30
-      #Environment:
-      #  Variables:
-          # Load environment variables from .env file
-      #Layers:
-      #  - !GetAtt: MyCommonLayer.Arn
+      Role: !GetAtt LambdaExecutionRole.Arn
 
   Function2:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: function1/index.handler
-      Runtime: nodejs20.x 
       CodeUri: functions/function1
-      MemorySize: 128
-      Timeout: 30
-      #Environment:
-      #  Variables:
-          # Load environment variables from .env file
-      #Layers:
-      #  - !GetAtt: MyCommonLayer.Arn
+      Role: !GetAtt LambdaExecutionRole.Arn
 
   Function3:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: function1/index.handler
-      Runtime: nodejs20.x 
       CodeUri: functions/function1
-      MemorySize: 128
-      Timeout: 30
-      #Environment:
-      #  Variables:
-          # Load environment variables from .env file
-      #Layers:
-      #  - !GetAtt: MyCommonLayer.Arn
+      Role: !GetAtt LambdaExecutionRole.Arn
 
   MyCommonLayer:
     Type: 'AWS::Serverless::LayerVersion'
