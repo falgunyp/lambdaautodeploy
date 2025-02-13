@@ -16,27 +16,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Changed to LTS version
-          cache: 'npm'  # Added npm cache for faster installations
-
-      - name: Install dependencies
-        run: npm ci  # Using ci instead of install for cleaner, reproducible builds
+          node-version: '20'
+          cache: 'npm'
 
       - name: Setup SAM CLI
         uses: aws-actions/setup-sam@v2
 
-      - name: Build layers (if applicable)
+      - name: Build layers
         run: |
           if [ -d "layers/my-common-layer" ]; then
-            cd layers/my-common-layer && npm ci && cd ../..
+            mkdir -p layers/my-common-layer/nodejs
+            cp layers/my-common-layer/package.json layers/my-common-layer/nodejs/
+            cd layers/my-common-layer/nodejs
+            npm ci
+            cd ../../..
           fi
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4  # Updated to latest version
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
+
+      - name: SAM build
+        run: sam build
 
       - name: Package and deploy
         run: |
@@ -50,4 +54,4 @@ jobs:
             --stack-name samdeploy \
             --capabilities CAPABILITY_IAM \
             --region ap-south-1 \
-            --no-fail-on-empty-changeset  # Added to prevent failures when no changes are detected
+            --no-fail-on-empty-changeset

@@ -1,3 +1,4 @@
+import express from "express";
 import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 
 export const handler = async (event) => {

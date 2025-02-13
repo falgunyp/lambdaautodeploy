@@ -44,10 +44,12 @@ Resources:
       #Layers:
       #  - !GetAtt: MyCommonLayer.Arn
 
-#  MyCommonLayer:
-#    Type: 'AWS::Serverless::LayerVersion'
-#    Properties:
-#      CompatibleRuntimes:
-#        - nodejs20.x 
-#      ContentUri: layers/my-common-layer 
-#      Description: 'My Common Layer'
+  MyCommonLayer:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      LayerName: my-common-layer
+      Description: Common dependencies layer
+      ContentUri: layers/my-common-layer
+      CompatibleRuntimes:
+        - nodejs20.x
+      RetentionPolicy: Retain

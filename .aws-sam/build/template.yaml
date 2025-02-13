@@ -31,10 +31,3 @@ Resources:
       Timeout: 30
     Metadata:
       SamResourceId: Function3
-  MyCommonLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      CompatibleRuntimes:
-      - nodejs20.x
-      ContentUri: ..\..\layers\my-common-layer
-      Description: My Common Layer
