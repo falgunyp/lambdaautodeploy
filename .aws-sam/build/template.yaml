@@ -5,12 +5,16 @@ Globals:
     MemorySize: 128
     Timeout: 30
     Runtime: nodejs20.x
-  Api:
-    Cors:
-      AllowMethods: '''GET,POST,PUT,DELETE'''
-      AllowHeaders: '''Content-Type'''
-      AllowOrigin: '''*'''
+
 Resources:
+  MyHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods: ['GET', 'POST', 'PUT', 'DELETE']
+        AllowHeaders: ['Content-Type']
+        AllowOrigins: ['*']
+
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -24,6 +28,7 @@ Resources:
           Action: sts:AssumeRole
       ManagedPolicyArns:
       - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
   Function1:
     Type: AWS::Serverless::Function
     Properties:
@@ -36,10 +41,11 @@ Resources:
         - Arn
       Events:
         ApiEvent:
-          Type: Api
+          Type: HttpApi
           Properties:
-            Path: /function1
-            Method: POST
+            ApiId: !Ref MyHttpApi
+            Path: /{proxy+}
+            Method: any
     Metadata:
       SamResourceId: Function1
   Function2:
@@ -54,10 +60,11 @@ Resources:
         - Arn
       Events:
         ApiEvent:
-          Type: Api
+          Type: HttpApi
           Properties:
-            Path: /function2
-            Method: POST
+            ApiId: !Ref MyHttpApi
+            Path: /{proxy+}
+            Method: any
     Metadata:
       SamResourceId: Function2
   Function3:
@@ -72,12 +79,14 @@ Resources:
         - Arn
       Events:
         ApiEvent:
-          Type: Api
+          Type: HttpApi
           Properties:
-            Path: /function3
-            Method: POST
+            ApiId: !Ref MyHttpApi
+            Path: /{proxy+}
+            Method: any
     Metadata:
       SamResourceId: Function3
+
   MyCommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -87,10 +96,11 @@ Resources:
       CompatibleRuntimes:
       - nodejs20.x
       RetentionPolicy: Retain
+
 Outputs:
   HttpApiEndpoint:
     Description: API Gateway HTTP API endpoint URL
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
   HttpApiId:
     Description: HTTP API Id
-    Value: !Ref ServerlessHttpApi
+    Value: !Ref MyHttpApi
