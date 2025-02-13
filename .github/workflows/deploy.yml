@@ -53,6 +53,6 @@ jobs:
           sam deploy \
             --template-file packaged.yaml \
             --stack-name samdeploy \
-            --capabilities CAPABILITY_IAM \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
             --region ap-south-1 \
             --no-fail-on-empty-changeset
