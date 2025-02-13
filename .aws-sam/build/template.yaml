@@ -88,7 +88,9 @@ Resources:
       - nodejs20.x
       RetentionPolicy: Retain
 Outputs:
-  ApiEndpoint:
-    Description: API Gateway endpoint URL
-    Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/
+  HttpApiEndpoint:
+    Description: API Gateway HTTP API endpoint URL
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  HttpApiId:
+    Description: HTTP API Id
+    Value: !Ref ServerlessHttpApi
