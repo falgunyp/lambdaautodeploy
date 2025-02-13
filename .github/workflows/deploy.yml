@@ -28,9 +28,10 @@ jobs:
             mkdir -p layers/my-common-layer/nodejs
             cp layers/my-common-layer/package.json layers/my-common-layer/nodejs/
             cd layers/my-common-layer/nodejs
-            npm ci
+            npm install
             cd ../../..
           fi
+
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
