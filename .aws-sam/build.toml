@@ -7,6 +7,24 @@ architecture = "x86_64"
 handler = "function1/index.handler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["Function1", "Function2", "Function3"]
+functions = ["Function1"]
+
+[function_build_definitions.4993387d-f94f-44a9-aa22-e39c98f80795]
+codeuri = "D:\\Github Project\\lambdaautodeploy\\functions\\function2"
+runtime = "nodejs20.x"
+architecture = "x86_64"
+handler = "function2/index.handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["Function2"]
+
+[function_build_definitions.86519bc1-a434-4507-9aba-aa5c145c3f25]
+codeuri = "D:\\Github Project\\lambdaautodeploy\\functions\\function3"
+runtime = "nodejs20.x"
+architecture = "x86_64"
+handler = "function3/index.handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["Function3"]
 
 [layer_build_definitions]
