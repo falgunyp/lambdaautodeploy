@@ -21,13 +21,15 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
   MyHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
       CorsConfiguration:
         AllowMethods: ['GET', 'POST', 'PUT', 'DELETE']
         AllowHeaders: ['Content-Type']
-        AllowOrigins: ['*'] 
+        AllowOrigins: ['*']
+
   Function1:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -39,6 +41,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
+            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
             Path: /function1
             Method: any
 
@@ -53,6 +56,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
+            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
             Path: /function2
             Method: any
 
@@ -67,6 +71,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
+            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
             Path: /function3
             Method: any
 
