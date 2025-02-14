@@ -81,9 +81,6 @@ Resources:
       RetentionPolicy: Retain
 
 Outputs:
-  HttpApiUrl:
-    Description: "Base URL for the API Gateway"
-    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
   HttpApiEndpoint:
     Description: API Gateway HTTP API endpoint URL
-    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
