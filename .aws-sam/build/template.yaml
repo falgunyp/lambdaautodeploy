@@ -46,7 +46,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function1
             Method: any
     Metadata:
       SamResourceId: Function1
@@ -64,7 +64,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function2
             Method: any
     Metadata:
       SamResourceId: Function2
@@ -82,7 +82,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function3
             Method: any
     Metadata:
       SamResourceId: Function3
