@@ -39,7 +39,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function1
             Method: any
 
   Function2:
@@ -53,7 +53,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function2
             Method: any
 
   Function3:
@@ -67,7 +67,7 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            Path: /{proxy+}
+            Path: /function3
             Method: any
 
   MyCommonLayer:
