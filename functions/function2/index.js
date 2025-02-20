@@ -3,7 +3,7 @@ exports.handler = async (event) => {
     try {
         // Handle GET request
         const response = {
-            message: "Function Update toray 14th Feb 2024 successfully",
+            message: "Function 2 Update toray 20th Feb 2024 successfully",
             queryParameters: event.queryStringParameters || {}
         };
 

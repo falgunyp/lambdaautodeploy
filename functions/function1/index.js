@@ -6,7 +6,7 @@ exports.handler = async (event) => {
       
       // Your function logic here
       const response = {
-          message: "Function 1 Update toray 14th Feb 2024 successfully",
+          message: "Function 1 Update toray 20th Feb 2024 successfully",
           receivedData: body
       };
 
