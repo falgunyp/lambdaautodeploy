@@ -6,6 +6,8 @@ Globals:
     MemorySize: 128
     Timeout: 30
     Runtime: nodejs20.x
+    Layers:
+      - !Ref MyCommonLayer  # Attach default layer to all Lambda functions
 
 Resources:
   LambdaExecutionRole:
