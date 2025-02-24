@@ -81,7 +81,7 @@ Resources:
     Type: 'AWS::Serverless::LayerVersion'
     Properties:
       LayerName: my-common-layer
-      Description: Common dependencies layer
+      Description: Common dependencies layer with centralized .env
       ContentUri: layers/my-common-layer
       CompatibleRuntimes:
         - nodejs20.x
