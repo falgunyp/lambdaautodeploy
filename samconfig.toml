@@ -3,17 +3,37 @@ version = 0.1
 [default]
 [default.deploy]
 stack_name = "recce-dev-stack"
-s3_bucket = "my-sam-artifacts-dev"
+s3_bucket = "lambdadeploymenttest07022025"
 s3_prefix = "recce-dev"
-region = "us-east-1"
+region = "ap-south-1"
 capabilities = "CAPABILITY_NAMED_IAM"
 parameter_overrides = "Environment=recce-dev"
+confirm_changeset = true
+disable_rollback = false
+image_repositories = []
+resolve_s3 = true
+s3_force_path_style = true
+
+[default.build]
+use_container = true
+cached = true
+parallel = true
 
 [recce-prod]
 [recce-prod.deploy]
 stack_name = "recce-prod-stack"
-s3_bucket = "my-sam-artifacts-prod"
+s3_bucket = "lamndaenv"
 s3_prefix = "recce-prod"
-region = "us-east-1"
+region = "ap-south-1"
 capabilities = "CAPABILITY_NAMED_IAM"
 parameter_overrides = "Environment=recce-prod"
+confirm_changeset = true
+fail_on_empty_changeset = false
+image_repositories = []
+resolve_s3 = true
+s3_force_path_style = true
+
+[recce-prod.build]
+use_container = true
+cached = true
+parallel = true
