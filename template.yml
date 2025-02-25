@@ -1,19 +1,31 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  Environment:
+    Type: String
+    Default: recce-dev
+    AllowedValues:
+      - recce-dev
+      - recce-prod
+    Description: Deployment environment (recce-dev or recce-prod)
+
 Globals:
   Function:
     MemorySize: 128
     Timeout: 30
     Runtime: nodejs20.x
     Layers:
-      - !Ref MyCommonLayer  # Attach default layer to all Lambda functions
+      - !Ref MyCommonLayer
+    Environment:
+      Variables:
+        ENV: !Ref Environment
 
 Resources:
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: reccelambdaiamrole
+      RoleName: !Sub "reccelambdaiamrole-${Environment}"
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -36,7 +48,7 @@ Resources:
   Function1:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: Function1
+      FunctionName: !Sub "Function1-${Environment}"
       Handler: function1/index.handler
       CodeUri: functions/function1
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -44,14 +56,14 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
+            ApiId: !Ref MyHttpApi
             Path: /function1
             Method: any
 
   Function2:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: Function2
+      FunctionName: !Sub "Function2-${Environment}"
       Handler: function2/index.handler
       CodeUri: functions/function2
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -59,14 +71,14 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
+            ApiId: !Ref MyHttpApi
             Path: /function2
             Method: any
 
   Function3:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: Function3
+      FunctionName: !Sub "Function3-${Environment}"
       Handler: function3/index.handler
       CodeUri: functions/function3
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -74,14 +86,14 @@ Resources:
         ApiEvent:
           Type: HttpApi
           Properties:
-            ApiId: !Ref MyHttpApi  # Explicitly attach to MyHttpApi
+            ApiId: !Ref MyHttpApi
             Path: /function3
             Method: any
 
   MyCommonLayer:
     Type: 'AWS::Serverless::LayerVersion'
     Properties:
-      LayerName: my-common-layer
+      LayerName: !Sub "my-common-layer-${Environment}"
       Description: Common dependencies layer with centralized .env
       ContentUri: layers/my-common-layer
       CompatibleRuntimes:
