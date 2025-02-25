@@ -1,0 +1,19 @@
+version = 0.1
+
+[default]
+[default.deploy]
+stack_name = "recce-dev-stack"
+s3_bucket = "my-sam-artifacts-dev"
+s3_prefix = "recce-dev"
+region = "us-east-1"
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "Environment=recce-dev"
+
+[recce-prod]
+[recce-prod.deploy]
+stack_name = "recce-prod-stack"
+s3_bucket = "my-sam-artifacts-prod"
+s3_prefix = "recce-prod"
+region = "us-east-1"
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "Environment=recce-prod"
