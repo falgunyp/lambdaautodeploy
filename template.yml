@@ -20,6 +20,9 @@ Globals:
     Environment:
       Variables:
         ENV: !Ref Environment
+    Tags:
+      Environment: !Ref Environment
+      Project: RecceProject
 
 Resources:
   LambdaExecutionRole:
@@ -44,6 +47,11 @@ Resources:
         AllowMethods: ['GET', 'POST', 'PUT', 'DELETE']
         AllowHeaders: ['Content-Type']
         AllowOrigins: ['*']
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 100
+        ThrottlingRateLimit: 50
+
+
 
   Function1:
     Type: 'AWS::Serverless::Function'
@@ -98,6 +106,7 @@ Resources:
       ContentUri: layers/my-common-layer
       CompatibleRuntimes:
         - nodejs20.x
+      LicenseInfo: 'MIT'
       RetentionPolicy: Retain
 
 Outputs:
