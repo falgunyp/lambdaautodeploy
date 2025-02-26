@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   build-and-deploy:
@@ -22,6 +23,18 @@ jobs:
       - name: Setup SAM CLI
         uses: aws-actions/setup-sam@v2
 
+      - name: Set Environment Variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "ENV=prod" >> $GITHUB_ENV
+            echo "S3_BUCKET=lambdadeployment-prod" >> $GITHUB_ENV
+            echo "STACK_NAME=recce-prod" >> $GITHUB_ENV
+          else
+            echo "ENV=dev" >> $GITHUB_ENV
+            echo "S3_BUCKET=lambdadeployment-dev" >> $GITHUB_ENV
+            echo "STACK_NAME=recce-dev" >> $GITHUB_ENV
+          fi
+
       - name: Build layers
         run: |
           if [ -d "layers/my-common-layer" ]; then
@@ -31,7 +44,6 @@ jobs:
             npm install
             cd ../../..
           fi
-
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -43,16 +55,16 @@ jobs:
       - name: SAM build
         run: sam build
 
-      - name: Package and deploy
+      - name: Package and Deploy
         run: |
           sam package \
             --output-template-file packaged.yaml \
-            --s3-bucket lambdadeploymenttest07022025 \
+            --s3-bucket ${{ env.S3_BUCKET }} \
             --region ap-south-1
-          
+
           sam deploy \
             --template-file packaged.yaml \
-            --stack-name samdeploy \
+            --stack-name ${{ env.STACK_NAME }} \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
             --region ap-south-1 \
             --no-fail-on-empty-changeset
