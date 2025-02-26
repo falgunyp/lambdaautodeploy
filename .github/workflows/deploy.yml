@@ -26,11 +26,11 @@ jobs:
       - name: Set Environment Variables
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "ENV=prod" >> $GITHUB_ENV
+            echo "ENV=recce-prod" >> $GITHUB_ENV
             echo "S3_BUCKET=lambdadeployment-prod" >> $GITHUB_ENV
             echo "STACK_NAME=recce-prod" >> $GITHUB_ENV
           else
-            echo "ENV=dev" >> $GITHUB_ENV
+            echo "ENV=recce-dev" >> $GITHUB_ENV
             echo "S3_BUCKET=lambdadeployment-dev" >> $GITHUB_ENV
             echo "STACK_NAME=recce-dev" >> $GITHUB_ENV
           fi
@@ -53,7 +53,7 @@ jobs:
           aws-region: ap-south-1
 
       - name: SAM build
-        run: sam build
+        run: sam build --parameter-overrides Environment=${{ env.ENV }}
 
       - name: Package and Deploy
         run: |
@@ -67,4 +67,5 @@ jobs:
             --stack-name ${{ env.STACK_NAME }} \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
             --region ap-south-1 \
+            --parameter-overrides Environment=${{ env.ENV }} \
             --no-fail-on-empty-changeset
