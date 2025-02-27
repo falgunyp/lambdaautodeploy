@@ -53,7 +53,7 @@ jobs:
           aws-region: ap-south-1
 
       - name: SAM build
-        run: sam build --parameter-overrides Environment=${{ env.ENV }}
+        run: sam build
 
       - name: Package and Deploy
         run: |
@@ -67,5 +67,5 @@ jobs:
             --stack-name ${{ env.STACK_NAME }} \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
             --region ap-south-1 \
-            --parameter-overrides Environment=${{ env.ENV }} \
-            --no-fail-on-empty-changeset
+            --no-fail-on-empty-changeset \
+            --parameter-overrides Environment=${{ env.ENV }}

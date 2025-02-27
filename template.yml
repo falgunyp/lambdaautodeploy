@@ -51,8 +51,6 @@ Resources:
         ThrottlingBurstLimit: 100
         ThrottlingRateLimit: 50
 
-
-
   Function1:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -113,3 +111,7 @@ Outputs:
   HttpApiEndpoint:
     Description: API Gateway HTTP API endpoint URL
     Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
+  
+  LambdaExecutionRoleArn:
+    Description: IAM Role ARN for Lambda Execution
+    Value: !GetAtt LambdaExecutionRole.Arn
