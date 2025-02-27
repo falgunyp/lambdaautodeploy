@@ -27,11 +27,11 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "ENV=recce-prod" >> $GITHUB_ENV
-            echo "S3_BUCKET=lambdadeployment-recce-prod" >> $GITHUB_ENV
+            echo "S3_BUCKET=lambdadeployment-prod" >> $GITHUB_ENV
             echo "STACK_NAME=recce-prod" >> $GITHUB_ENV
           else
             echo "ENV=recce-dev" >> $GITHUB_ENV
-            echo "S3_BUCKET=lambdadeployment-recce-dev" >> $GITHUB_ENV
+            echo "S3_BUCKET=lambdadeployment-dev" >> $GITHUB_ENV
             echo "STACK_NAME=recce-dev" >> $GITHUB_ENV
           fi
 
